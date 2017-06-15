@@ -63,5 +63,6 @@ feature "Newsletter Sending" do
     # email should also have an attachment of the pdf document itself
     # email title should contain MUBC Newsletter - "field that they can enter"
     # only a super-admin can share newsletter through email
+    # there should also be a checkbox option for 'publish to facebook'
   end
 end
