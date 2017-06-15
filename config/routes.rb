@@ -2,7 +2,12 @@ Melbourneunibasketball::Application.routes.draw do
   namespace :admin do
     resources :pages
     resources :news_items
-    resources :newsletters
+    resources :newsletters do
+      member do
+        get 'email'
+        post 'send'
+      end
+    end
     resources :members do
       member do
         get 'acknowledge_payment'

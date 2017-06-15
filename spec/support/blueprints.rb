@@ -27,3 +27,11 @@ Member.blueprint do
   phone_number_other     { "9600 1234" }
   amount_paid            { "110" }
 end
+
+Newsletter.blueprint do
+  title          { "Dribbling Balls 2017 - Volume 30 edition #{sn}" }
+  author         { "Author #{sn}" }
+  synopsis       { "Synopsis #{sn}" }
+  dribbling_balls_link { "https://s3.amazonaws.com/mubc/dribbling_balls/2017_04_24_volume_30_issue_002.pdf" }
+  created_at     { Time.now }
+end
