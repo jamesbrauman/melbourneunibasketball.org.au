@@ -2,6 +2,7 @@ Melbourneunibasketball::Application.routes.draw do
   namespace :admin do
     resources :pages
     resources :news_items
+    resources :newsletters
     resources :members do
       member do
         get 'acknowledge_payment'
