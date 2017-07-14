@@ -50,19 +50,60 @@ feature "Newsletter Sending" do
         fill_in "Title", with: "Trivia Night 2017"  # ie. title will be 'MUBC Newsletter - Trivia Night 2017'
         click_button "Create Newsletter"
       end
+
+      Timecop.freeze(jan_31_2012) do
+        expect(NewsletterMailer).to(receive(:deliver_signup).with(
+          newsletter.id,
+          'MUBC Newsletter - Trivia Night 2017',
+          ["someone@somewhere.com", "someoneelse@somewhere.com", "2012_member@gmail.com", "committee@melbourneunibasketball.org.au"]
+        ))
+        visit email_admin_newsletter(newsletter.id)
+        check 'Send to all current members'
+        fill_in "Extra Recipients", with: "someone@somewhere.com,someoneelse@somewhere.com"
+        fill_in "Title", with: "Trivia Night 2017"  # ie. title will be 'MUBC Newsletter - Trivia Night 2017'
+        click_button "Create Newsletter"
+      end
+
+      Timecop.freeze(dec_31_2013) do
+        expect(NewsletterMailer).to(receive(:deliver_signup).with(
+          newsletter.id,
+          'MUBC Newsletter - Trivia Night 2017',
+          ["someone@somewhere.com", "someoneelse@somewhere.com", "2013_member_1@gmail.com", "2013_member_2@gmail.com", "committee@melbourneunibasketball.org.au"]
+        ))
+        visit email_admin_newsletter(newsletter.id)
+        check 'Send to all current members'
+        fill_in "Extra Recipients", with: "someone@somewhere.com,someoneelse@somewhere.com"
+        fill_in "Title", with: "Trivia Night 2017"  # ie. title will be 'MUBC Newsletter - Trivia Night 2017'
+        click_button "Create Newsletter"
+      end
+
+      Timecop.freeze(jan_31_2015) do
+        expect(NewsletterMailer).to(receive(:deliver_signup).with(
+          newsletter.id,
+          'MUBC Newsletter - Trivia Night 2017',
+          ["someone@somewhere.com", "someoneelse@somewhere.com", "2015_member@gmail.com", "committee@melbourneunibasketball.org.au"]
+        ))
+        visit email_admin_newsletter(newsletter.id)
+        check 'Send to all current members'
+        fill_in "Extra Recipients", with: "someone@somewhere.com,someoneelse@somewhere.com"
+        fill_in "Title", with: "Trivia Night 2017"  # ie. title will be 'MUBC Newsletter - Trivia Night 2017'
+        click_button "Create Newsletter"
+      end
     end
 
-    # emails should only go to current members
-    # emailing a newsletter should only be available on a newsletter edit screen if it hasn't been sent before
-    # we should be able to modify the body of the email that is sent
-    # the newsletters admin list should show the sent date if a newsletter has been emailed to memebers
-    # field to add extra bcc recipients
-    # should always bcc the committee@melbourneunibasketball.org.au
-    # email should be sent from social@melbourneunibasketball.org.au
-    # email body should contain an inline image of the cover of the newsletter and that should link to the amazon s3 url
-    # email should also have an attachment of the pdf document itself
-    # email title should contain MUBC Newsletter - "field that they can enter"
-    # only a super-admin can share newsletter through email
-    # there should also be a checkbox option for 'publish to facebook'
+    # Implemented tests:
+      # emails should only go to current members
+      # should always bcc the committee@melbourneunibasketball.org.au
+      # email title should contain MUBC Newsletter - "field that they can enter"
+
+    # Non-Implemented tests:
+      # emailing a newsletter should only be available on a newsletter edit screen if it hasn't been sent before
+      # we should be able to modify the body of the email that is sent
+      # the newsletters admin list should show the sent date if a newsletter has been emailed to memebers
+      # field to add extra bcc recipients
+      # email should be sent from social@melbourneunibasketball.org.au
+      # email body should contain an inline image of the cover of the newsletter and that should link to the amazon s3 url
+      # email should also have an attachment of the pdf document itself
+      # only a super-admin can share newsletter through email
   end
 end
