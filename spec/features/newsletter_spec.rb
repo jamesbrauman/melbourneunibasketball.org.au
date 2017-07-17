@@ -34,61 +34,22 @@ feature "Newsletter Sending" do
   let!(:jan_31_2015_member){ Member.make!(created_at: jan_31_2015, payment_confirmed: true, amount_paid: 130, email: "2015_member@gmail.com") }
 
 
-  let(:newsletter){ Newsletter.make }
+  let(:newsletter){ Newsletter.make! }
 
   scenario "POST /admin/newsletters/:id/send" do
-    context "when we check the box to send to current members" do
-      Timecop.freeze(mar_31_2013) do
-        expect(NewsletterMailer).to(receive(:deliver_signup).with(
-          newsletter.id,
-          'MUBC Newsletter - Trivia Night 2017',
-          ["someone@somewhere.com", "someoneelse@somewhere.com", "2013_member_1@gmail.com", "2013_member_2@gmail.com"]
-        ))
-        visit email_admin_newsletter(newsletter.id)
-        check 'Send to all current members'
-        fill_in "Extra Recipients", with: "someone@somewhere.com,someoneelse@somewhere.com"
-        fill_in "Title", with: "Trivia Night 2017"  # ie. title will be 'MUBC Newsletter - Trivia Night 2017'
-        click_button "Create Newsletter"
-      end
-
-      Timecop.freeze(jan_31_2012) do
-        expect(NewsletterMailer).to(receive(:deliver_signup).with(
-          newsletter.id,
-          'MUBC Newsletter - Trivia Night 2017',
-          ["someone@somewhere.com", "someoneelse@somewhere.com", "2012_member@gmail.com", "committee@melbourneunibasketball.org.au"]
-        ))
-        visit email_admin_newsletter(newsletter.id)
-        check 'Send to all current members'
-        fill_in "Extra Recipients", with: "someone@somewhere.com,someoneelse@somewhere.com"
-        fill_in "Title", with: "Trivia Night 2017"  # ie. title will be 'MUBC Newsletter - Trivia Night 2017'
-        click_button "Create Newsletter"
-      end
-
-      Timecop.freeze(dec_31_2013) do
-        expect(NewsletterMailer).to(receive(:deliver_signup).with(
-          newsletter.id,
-          'MUBC Newsletter - Trivia Night 2017',
-          ["someone@somewhere.com", "someoneelse@somewhere.com", "2013_member_1@gmail.com", "2013_member_2@gmail.com", "committee@melbourneunibasketball.org.au"]
-        ))
-        visit email_admin_newsletter(newsletter.id)
-        check 'Send to all current members'
-        fill_in "Extra Recipients", with: "someone@somewhere.com,someoneelse@somewhere.com"
-        fill_in "Title", with: "Trivia Night 2017"  # ie. title will be 'MUBC Newsletter - Trivia Night 2017'
-        click_button "Create Newsletter"
-      end
-
-      Timecop.freeze(jan_31_2015) do
-        expect(NewsletterMailer).to(receive(:deliver_signup).with(
-          newsletter.id,
-          'MUBC Newsletter - Trivia Night 2017',
-          ["someone@somewhere.com", "someoneelse@somewhere.com", "2015_member@gmail.com", "committee@melbourneunibasketball.org.au"]
-        ))
-        visit email_admin_newsletter(newsletter.id)
-        check 'Send to all current members'
-        fill_in "Extra Recipients", with: "someone@somewhere.com,someoneelse@somewhere.com"
-        fill_in "Title", with: "Trivia Night 2017"  # ie. title will be 'MUBC Newsletter - Trivia Night 2017'
-        click_button "Create Newsletter"
-      end
+    #context "when we check the box to send to current members" do
+    Timecop.freeze(mar_31_2013) do
+      expect(NewsletterMailer).to(receive(:deliver_signup).with(
+        newsletter.id,
+        'MUBC Newsletter - Trivia Night 2017',
+        ["someone@somewhere.com", "someoneelse@somewhere.com", "2013_member_1@gmail.com", "2013_member_2@gmail.com"]
+      ))
+      visit email_admin_newsletter_path(newsletter.id)
+      check 'Send to all current members'
+      save_and_open_page
+      fill_in "Extra recipients", with: "someone@somewhere.com,someoneelse@somewhere.com"
+      fill_in "Title", with: "Trivia Night 2017"  # ie. title will be 'MUBC Newsletter - Trivia Night 2017'
+      click_button "Send Newsletter"
     end
 
     # Implemented tests:
