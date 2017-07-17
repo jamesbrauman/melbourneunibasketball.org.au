@@ -34,33 +34,37 @@ feature "Newsletter Sending" do
   let!(:jan_31_2015_member){ Member.make!(created_at: jan_31_2015, payment_confirmed: true, amount_paid: 130, email: "2015_member@gmail.com") }
 
 
-  let(:newsletter){ Newsletter.make }
+  let(:newsletter){ Newsletter.make! }
 
   scenario "POST /admin/newsletters/:id/send" do
+    #context "when we check the box to send to current members" do
     Timecop.freeze(mar_31_2013) do
-      expect(NewsletterMailer).to(receive(:deliver_signup).with(
+      expect(NewsletterMailer).to(receive(:deliver_distribute).with(
         newsletter.id,
         'MUBC Newsletter - Trivia Night 2017',
         ["someone@somewhere.com", "someoneelse@somewhere.com", "2013_member_1@gmail.com", "2013_member_2@gmail.com"]
       ))
-      visit email_admin_newsletter(newsletter.id)
+      visit email_admin_newsletter_path(newsletter.id)
       check 'Send to all current members'
-      fill_in "Extra Recipients", with: "someone@somewhere.com,someoneelse@somewhere.com"
+      fill_in "Extra recipients", with: "someone@somewhere.com,someoneelse@somewhere.com"
       fill_in "Title", with: "Trivia Night 2017"  # ie. title will be 'MUBC Newsletter - Trivia Night 2017'
-      click_button "Create Newsletter"
+      click_button "Send Newsletter"
+      page.should have_content("Newsletter was successfully delivered.")
     end
 
-    # emails should only go to current members
-    # emailing a newsletter should only be available on a newsletter edit screen if it hasn't been sent before
-    # we should be able to modify the body of the email that is sent
-    # the newsletters admin list should show the sent date if a newsletter has been emailed to memebers
-    # field to add extra bcc recipients
-    # should always bcc the committee@melbourneunibasketball.org.au
-    # email should be sent from social@melbourneunibasketball.org.au
-    # email body should contain an inline image of the cover of the newsletter and that should link to the amazon s3 url
-    # email should also have an attachment of the pdf document itself
-    # email title should contain MUBC Newsletter - "field that they can enter"
-    # only a super-admin can share newsletter through email
-    # there should also be a checkbox option for 'publish to facebook'
+    # Implemented tests:
+      # emails should only go to current members
+      # should always bcc the committee@melbourneunibasketball.org.au
+      # email title should contain MUBC Newsletter - "field that they can enter"
+
+    # Non-Implemented tests:
+      # emailing a newsletter should only be available on a newsletter edit screen if it hasn't been sent before
+      # we should be able to modify the body of the email that is sent
+      # the newsletters admin list should show the sent date if a newsletter has been emailed to memebers
+      # field to add extra bcc recipients
+      # email should be sent from social@melbourneunibasketball.org.au
+      # email body should contain an inline image of the cover of the newsletter and that should link to the amazon s3 url
+      # email should also have an attachment of the pdf document itself
+      # only a super-admin can share newsletter through email
   end
 end
