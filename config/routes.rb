@@ -5,7 +5,7 @@ Melbourneunibasketball::Application.routes.draw do
     resources :newsletters do
       member do
         get 'email'
-        post 'send'
+        post 'deliver'
       end
     end
     resources :members do

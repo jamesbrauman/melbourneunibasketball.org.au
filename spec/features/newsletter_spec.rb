@@ -39,17 +39,17 @@ feature "Newsletter Sending" do
   scenario "POST /admin/newsletters/:id/send" do
     #context "when we check the box to send to current members" do
     Timecop.freeze(mar_31_2013) do
-      expect(NewsletterMailer).to(receive(:deliver_signup).with(
+      expect(NewsletterMailer).to(receive(:deliver_distribute).with(
         newsletter.id,
         'MUBC Newsletter - Trivia Night 2017',
         ["someone@somewhere.com", "someoneelse@somewhere.com", "2013_member_1@gmail.com", "2013_member_2@gmail.com"]
       ))
       visit email_admin_newsletter_path(newsletter.id)
       check 'Send to all current members'
-      save_and_open_page
       fill_in "Extra recipients", with: "someone@somewhere.com,someoneelse@somewhere.com"
       fill_in "Title", with: "Trivia Night 2017"  # ie. title will be 'MUBC Newsletter - Trivia Night 2017'
       click_button "Send Newsletter"
+      page.should have_content("Newsletter was successfully delivered.")
     end
 
     # Implemented tests:

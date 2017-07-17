@@ -1,6 +1,6 @@
 .row
   .span6
-    = form_for [:admin, @newsletter], :html => { :class => 'form-horizontal', id: "admin_newsletter_form" } do |f|
+    = form_for @newsletter, url: deliver_admin_newsletter_path(@newsletter), method: :post, html: { class: 'form-horizontal', id: "admin_newsletter_form" } do |f|
       .control-group
         = f.label :send_to_all_current_members, :class => 'control-label'
         .controls
