@@ -4,7 +4,17 @@ class Admin::NewslettersController < Admin::BaseController
   end
 
   def new
+    @newsletter = Newsletter.new
+  end
 
+  def index
+
+  end
+
+  def create
+    Newsletter.create(title: "params[:title]")
+    puts "//////////////Newsletter Created///////////"
+    puts params
   end
 
   def deliver
