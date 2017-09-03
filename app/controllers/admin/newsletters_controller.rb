@@ -21,7 +21,6 @@ class Admin::NewslettersController < Admin::BaseController
 
     respond_to do |format|
       if @newsletter.save
-debugger
         format.html { redirect_to [:admin, @newsletter], notice: 'Newsletter was successfully created.' }
         format.json { render json: @newsletter, status: :created, location: @newsletter }
       else
