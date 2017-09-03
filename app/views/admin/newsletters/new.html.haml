@@ -1,0 +1,18 @@
+.row
+  .span6
+    = form_for @newsletter, url: admin_newsletters_path(@newsletter), method: :post,  html: { class: 'form-horizontal', id: "add_admin_newsletter_form" } do |f|
+      .control-group
+        = f.label :title, :class => 'control-label'
+        .controls
+          = f.text_field :title, :class => 'text_field'
+      .control-group
+        = f.label :author, :class => 'control-label'
+        .controls
+          = f.text_field :author, :class => 'text_field'
+      .control-group
+        = f.label :content, :class => 'control-label'
+        .controls
+          = f.text_field :content, :class => 'text_field'
+      .form-actions
+        = f.submit "Create Newsletter", :class => 'btn btn-primary'
+        = link_to "Cancel", new_admin_newsletter_path, :class => 'btn'
