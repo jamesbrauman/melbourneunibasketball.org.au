@@ -17,11 +17,6 @@ class Admin::NewslettersController < Admin::BaseController
   end
 
   def create
-<<<<<<< HEAD
-    Newsletter.create(title: params[:title])
-    puts "//////////////Newsletter Created///////////"
-    puts params
-=======
     @newsletter = Newsletter.new(newsletter_params)
 
     respond_to do |format|
@@ -33,11 +28,12 @@ class Admin::NewslettersController < Admin::BaseController
         format.json { render json: @newsletter.errors, status: :unprocessable_entity }
       end
     end
->>>>>>> e51e95e5ff23353ffd7a654f2722f2714d0e71c4
   end
 
   def deliver
-    NewsletterMailer.distribute(params[:id], params[:title], params[:extra_recipients]).deliver
+    extra_recipients = params[:newsletter][:extra_recipients].split(",").collect(&:strip)
+    # manually test it when feature is set up
+    NewsletterMailer.distribute(params[:id], "MUBC Newsletter - "+params[:newsletter][:title], extra_recipients).deliver
     redirect_to admin_newsletters_path, flash: {notice: "Newsletter was successfully delivered."}
   end
 
