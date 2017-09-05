@@ -12,7 +12,7 @@ class Admin::NewslettersController < Admin::BaseController
   end
 
   def create
-    Newsletter.create(title: "params[:title]")
+    Newsletter.create(title: params[:title])
     puts "//////////////Newsletter Created///////////"
     puts params
   end

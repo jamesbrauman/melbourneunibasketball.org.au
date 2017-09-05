@@ -16,7 +16,7 @@ feature "Newsletter Creation" do
       click_button "Create Newsletter"
       page.should have_content("Newsletter was successfully created.")
       page.should have_content("Dribbling Balls 2017 - Volume 30 edition 2")
-    }.should change(NewsItem.dribbling_balls, :count).by(1)
+    }.should change(Newsletter, :count).by(1)
   end
 end
 #  email_admin_newsletter GET    /admin/newsletters/:id/email(.:format)           admin/newsletters#email
