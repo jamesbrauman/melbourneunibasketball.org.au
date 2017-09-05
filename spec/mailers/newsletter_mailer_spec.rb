@@ -8,7 +8,7 @@ describe NewsletterMailer do
     context "when an ios Device is associated with the email address" do
       let(:newsletter){ Newsletter.make }
       let(:mail){
-        NewsletterMailer.newsletter(
+        NewsletterMailer.distribute(
           newsletter.id,
           'MUBC Newsletter - Trivia Night 2017',
           [ "someoneelse@somewhere.com" ]
