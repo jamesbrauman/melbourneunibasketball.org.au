@@ -62,7 +62,4 @@ end
 
 group :development do
   gem "syntax"
-  gem "guard"
-  gem "guard-livereload"
-  gem "rack-livereload"
 end
